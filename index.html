@@ -14,21 +14,25 @@
 <body>
     <h1>مرحبًا بك في IndexedDB!</h1>
     <p>سيتم تحميل JavaScript و CSS من IndexedDB.</p>
-    <button onclick="applyStyle()">تغيير لون ال خلفية </button>
-
+    <button onclick="applyStyle()">تغيير لون الخلفية</button>
 
     <script>
+        function applyStyle() {
+            document.body.style.backgroundColor =
+                document.body.style.backgroundColor === "lightblue" ? "white" : "lightblue";
+            console.log("تم تغيير لون الخلفية!");
+        }
+
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('service-worker.js')
                 .then(reg => console.log("Service Worker مسجل بنجاح", reg))
                 .catch(err => console.error("فشل تسجيل Service Worker", err));
-
         }
-
     </script>
 
     <script defer src="service-worker.js"></script>
     <script defer src="indexeddb.js"></script>
+    <script defer src="app.js"></script>
 </body>
 
 </html>
