@@ -1,5 +1,5 @@
 {
-    "name": "IndexedDB App",
+    "name": "IndexedDB PWA",
     "short_name": "IndexedDB",
     "start_url": "/",
     "display": "standalone",
