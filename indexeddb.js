@@ -78,26 +78,40 @@ function getFileFromDB(fileName, callback) {
     .catch((error) => console.error(error));
 }
 
-// Download and update files from the server
-
+// Fetch and update files from the server
 function fetchAndUpdateFile(fileName, fileType) {
+  console.log(`Fetching ${fileName}...`); // Debug log
   getFileMeta(fileName).then((savedMeta) => {
-    fetch(fileName, { method: "HEAD" }).then((response) => {
-      let newMeta =
-        response.headers.get("ETag") || response.headers.get("Last-Modified");
-      if (!savedMeta || savedMeta !== newMeta) {
-        console.log(`تم تحديث ${fileName}، سيتم تحميل النسخة الجديدة.`);
-        fetch(fileName)
-          .then((response) => response.text())
-          .then((data) => {
-            saveFileToDB(data, fileName, fileType);
-            saveFileMeta(fileName, newMeta);
-            console.log(`تم تخزين النسخة الجديدة من ${fileName}`);
-          });
-      } else {
-        console.log(`${fileName} لم يتم تغييره، سيتم تحميله من IndexedDB.`);
-      }
-    });
+    fetch(fileName, { method: "HEAD" })
+      .then((response) => {
+        if (!response.ok) {
+          console.error(`Failed to fetch ${fileName}: ${response.statusText}`);
+          return;
+        }
+        let newMeta =
+          response.headers.get("ETag") || response.headers.get("Last-Modified");
+        if (!savedMeta || savedMeta !== newMeta) {
+          console.log(`تم تحديث ${fileName}، سيتم تحميل النسخة الجديدة.`);
+          fetch(fileName)
+            .then((response) => {
+              if (!response.ok) {
+                console.error(
+                  `Failed to fetch ${fileName}: ${response.statusText}`
+                );
+                return;
+              }
+              return response.text();
+            })
+            .then((data) => {
+              saveFileToDB(data, fileName, fileType);
+              saveFileMeta(fileName, newMeta);
+              console.log(`تم تخزين النسخة الجديدة من ${fileName}`);
+            });
+        } else {
+          console.log(`${fileName} لم يتم تغييره، سيتم تحميله من IndexedDB.`);
+        }
+      })
+      .catch((err) => console.error(`Error fetching ${fileName}:`, err));
   });
 }
 
