@@ -5,7 +5,6 @@ function applyStyle() {
 }
 
 console.log("تم تحميل وتشغيل app.js من IndexedDB!");
-let deferredPrompt;
 
 window.addEventListener('beforeinstallprompt', (event) => {
     event.preventDefault();
