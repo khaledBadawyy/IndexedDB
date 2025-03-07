@@ -35,3 +35,26 @@ window.addEventListener('beforeinstallprompt', (event) => {
         });
     });
 });
+
+
+let deferredPrompt;
+
+window.addEventListener("beforeinstallprompt", (event) => {
+  event.preventDefault();
+  deferredPrompt = event;
+
+  const installButton = document.getElementById("installPWA");
+  installButton.style.display = "block";
+
+  installButton.addEventListener("click", () => {
+    deferredPrompt.prompt();
+    deferredPrompt.userChoice.then((choiceResult) => {
+      if (choiceResult.outcome === "accepted") {
+        console.log("User accepted the PWA install");
+      } else {
+        console.log("User dismissed the PWA install");
+      }
+      deferredPrompt = null;
+    });
+  });
+});

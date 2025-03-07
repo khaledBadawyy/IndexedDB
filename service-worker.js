@@ -4,7 +4,7 @@ const FILES_TO_CACHE = [
   "style.css",
   "indexeddb.js",
   "app.js",
-  "manifest.json",
+  "IndexedDB/manifest.json",
 ];
 
 // تثبيت الـ Service Worker وتخزين الملفات في الكاش
