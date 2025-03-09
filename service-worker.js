@@ -9,39 +9,24 @@ const urlsToCache = [
   "IndexedDB/icon-192x192.png",
 ];
 
+// تثبيت Service Worker
 self.addEventListener("install", (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
-      return Promise.all(
-        urlsToCache.map((url) =>
-          fetch(url)
-            .then((response) => {
-              if (!response.ok) {
-                console.warn(`❌ تخطي الكاش لـ: ${url} (استجابة غير صالحة)`);
-                return;
-              }
-              return cache.put(url, response);
-            })
-            .catch((err) => {
-              console.warn(`❌ فشل تحميل: ${url}`, err);
-            })
-        )
-      );
+      return cache.addAll(urlsToCache).then(() => {
+        console.log("تم تخزين جميع الملفات في الكاش بنجاح!");
+      });
     })
   );
 });
 
-// تشغيل التطبيق بدون إنترنت
+// استجابة الطلبات من الكاش
 self.addEventListener("fetch", (event) => {
-  if (event.request.mode === "navigate") {
-    event.respondWith(fetch(event.request)); // تحميل الصفحة الرئيسية مباشرة بدون كاش
-  } else {
-    event.respondWith(
-      caches.match(event.request).then((response) => {
-        return response || fetch(event.request);
-      })
-    );
-  }
+  event.respondWith(
+    caches.match(event.request).then((response) => {
+      return response || fetch(event.request);
+    })
+  );
 });
 
 // تحديث الكاش عند تغيير الملفات

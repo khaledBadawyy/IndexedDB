@@ -1,5 +1,5 @@
 {
-  "name": "IndexedDB PWA",
+  "name": "IndexedDB",
   "short_name": "IndexedDB",
   "start_url": "index.html",
   "display": "standalone",

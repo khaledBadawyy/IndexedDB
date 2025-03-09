@@ -4,21 +4,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IndexedDB PWA</title>
+    <title>تخزين البيانات في الكاش</title>
     <link rel="stylesheet" href="style.css">
     <link rel="manifest" href="IndexedDB/manifest.json">
     <link rel="icon" href="IndexedDB/icon-192x192.png">
-
+    <script>
+        function loadFromCache() {
+            let cachedData = localStorage.getItem('cachedData');
+            if (cachedData) {
+                document.getElementById('dataInput').value = cachedData;
+            }
+        }
+    </script>
 </head>
 
-<body>
+<body onload="loadFromCache()">
     <h1>مرحبًا بك في IndexedDB!</h1>
     <p>سيتم تحميل JavaScript و CSS من IndexedDB.</p>
     <button onclick="applyStyle()"> لون الخلفية</button>
-    <a href="newpage.html"><button>الذهاب إلى الصفحة  +-الجديدة</button></a>
-
-
-
+    <a href="newpage.html"><button>الذهاب إلى الصفحة الجديدة</button></a>
     <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
@@ -28,11 +32,9 @@
             });
         }
     </script>
-
     <script defer src="service-worker.js"></script>
-    <script defer src="indexeddb.js"></script>
+ 
     <script defer src="app.js"></script>
-
 </body>
 
 </html>
