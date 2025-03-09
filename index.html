@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ar">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IndexedDB PWA</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="IndexedDB/manifest.json">
+    <link rel="icon" href="IndexedDB/icon-192x192.png">
+
+</head>
+
+<body>
+    <h1>مرحبًا بك في IndexedDB!</h1>
+    <p>سيتم تحميل JavaScript و CSS من IndexedDB.</p>
+    <button onclick="applyStyle()"> لون الخلفية</button>
+    <a href="newpage.html"><button>الذهاب إلى الصفحة  +-الجديدة</button></a>
+
+
+
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('service-worker.js')
+                    .then(reg => console.log("Service Worker مسجل بنجاح", reg))
+                    .catch(err => console.error("فشل تسجيل Service Worker", err));
+            });
+        }
+    </script>
+
+    <script defer src="service-worker.js"></script>
+    <script defer src="indexeddb.js"></script>
+    <script defer src="app.js"></script>
+
+</body>
+
+</html>
